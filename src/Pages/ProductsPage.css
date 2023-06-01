@@ -59,7 +59,7 @@ label {
 
 }
 
-.search button{
+.search button {
     padding-top: 6px;
     padding-bottom: 6px;
     padding-left: 10px;
@@ -70,6 +70,7 @@ label {
     color: aliceblue;
     cursor: pointer;
 }
-.search button:hover{
+
+.search button:hover {
     background-color: #069cc9;
 }

@@ -1,6 +1,6 @@
 
 
-function Sort({ setPage, page, totaldata, setShowData, setTotaldata, filterbyCatagory, sort }) {
+function Sort({ setPage, page, totaldata, setShowData, setTotaldata, filterbyCatagory, sort, setSort }) {
 
 
 
@@ -30,7 +30,10 @@ function Sort({ setPage, page, totaldata, setShowData, setTotaldata, filterbyCat
 
     return (
         <>
-            <select value={sort} onChange={HandleSort}>
+            <select value={sort} onChange={prev => {
+                setSort(prev.target.value)
+                HandleSort(prev)
+            }}>
                 <option value="" >Sort</option>
                 <option value="htl">High To Low</option>
                 <option value="lth">Low To High</option>

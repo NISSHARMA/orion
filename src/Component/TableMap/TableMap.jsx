@@ -2,6 +2,7 @@ import { useState } from "react"
 import "./TableMap.css"
 import { BsCurrencyRupee } from 'react-icons/bs';
 
+//______________________Products Data Map________________________________//
 
 function TableMap({ title, description, thumbnail, price, rating, id }) {
 
@@ -22,8 +23,6 @@ function TableMap({ title, description, thumbnail, price, rating, id }) {
             setCartquantity(cartquantity - 1)
         }
     }
-
-
 
     return (
         <>

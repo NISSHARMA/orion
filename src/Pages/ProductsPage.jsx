@@ -6,38 +6,51 @@ import Sort from "../Component/SortFilter/Sort";
 import { GrPowerReset } from 'react-icons/gr';
 
 function ProductsPage() {
+
   const [totaldata, setTotaldata] = useState([])
   const [showdata, setShowData] = useState([])
   const [filterbyCatagory, setFilterbyCatagory] = useState("")
   const [sort, setSort] = useState("")
-  const [page, setPage] = useState(1);
-
+  const [page, setPage] = useState(1)
   const [query, setQuery] = useState("")
 
+
+
+
+  //_____________Search Function_________________________________//
   async function handleSearch() {
+    if (query == "") {
+      reset()
+      return;
+    }
     setSort("")
     setFilterbyCatagory("")
-
     const res = await fetch(
       `https://dummyjson.com/products/search?q=${query}`
     );
     const data = await res.json();
-    console.log(data.products)
     setShowData(() => data.products)
+    setTotaldata(() => data.products)
 
   }
-  console.log(showdata)
 
+
+
+  //_____________Get all products data at ones________________________//
   const getCardData = async () => {
     const res = await fetch(
       `https://dummyjson.com/products?limit=100`
     );
     const data = await res.json();
     setTotaldata(data.products);
-    setShowData(data.products.slice(page * 20 - 20, page * 20))
-    setPage(prev => Number(prev) + 1)
+    setShowData(data.products.slice(0, 20))
+    setPage(2)
   };
 
+
+
+
+  //_______________________Infinite Scrolling Logic_________________________//
   const handelInfiniteScroll = async () => {
     try {
       if (
@@ -56,6 +69,10 @@ function ProductsPage() {
   }, []);
 
 
+
+
+
+  //_________________Scroll Event Listner_____________________//
   useEffect(() => {
     window.addEventListener("scroll", handelInfiniteScroll);
     return () => window.removeEventListener("scroll", handelInfiniteScroll);
@@ -63,8 +80,14 @@ function ProductsPage() {
 
 
 
+
+
+  //________________ Reset function __________________________//
   function reset() {
-    window.location.reload(true)
+    setSort("")
+    setFilterbyCatagory("")
+    setQuery("")
+    getCardData()
   }
 
 
@@ -75,9 +98,8 @@ function ProductsPage() {
       <div className="sortfiltersearch">
         <div className="sortfilter">
           <div><Filter setFilterbyCatagory={setFilterbyCatagory} totaldata={totaldata} setShowData={setShowData}
-            filterbyCatagory={filterbyCatagory}
-
-          /></div>
+            filterbyCatagory={filterbyCatagory} />
+          </div>
 
           <div> <Sort setPage={setPage}
             filterbyCatagory={filterbyCatagory}
@@ -86,6 +108,7 @@ function ProductsPage() {
             setShowData={setShowData}
             showdata={showdata}
             sort={sort}
+            setSort={setSort}
           /></div>
 
 
@@ -94,7 +117,7 @@ function ProductsPage() {
           </div>
         </div>
 
-        <div className="search"> <input type="text" placeholder="Search..." onChange={(e) => setQuery(e.target.value)} />
+        <div className="search"> <input type="text" value={query} placeholder="Search..." onChange={(e) => setQuery(e.target.value)} />
           <button onClick={handleSearch}>Search</button>
         </div>
       </div>
@@ -125,4 +148,3 @@ export default ProductsPage;
 
 
 
-//<div>   <Search totaldata={totaldata} setShowData={setShowData} /></div>

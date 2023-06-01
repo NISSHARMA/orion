@@ -1,6 +1,6 @@
 import { useState } from "react"
 
-function Filter({ setFilterbyCatagory, totaldata, setShowData ,filterbyCatagory}) {
+function Filter({ setFilterbyCatagory, totaldata, setShowData, filterbyCatagory }) {
 
 
     function HandleFilter(e) {
@@ -16,7 +16,7 @@ function Filter({ setFilterbyCatagory, totaldata, setShowData ,filterbyCatagory}
     return (
         <>
             <label >Filter :{" "} </label>
-            <select value={filterbyCatagory}  onChange={prev => {
+            <select value={filterbyCatagory} onChange={prev => {
                 setFilterbyCatagory(prev.target.value)
                 HandleFilter(prev)
             }}>

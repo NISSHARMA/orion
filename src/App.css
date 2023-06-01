@@ -1,11 +1,11 @@
-
-*{
+* {
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 
-h1{
+h1 {
   color: #0097C1;
 }
-select{
+
+select {
   padding: 3px 7px;
 }
