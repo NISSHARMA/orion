@@ -1,12 +1,32 @@
 import { useEffect, useState } from "react"
 import TableMap from "../Component/TableMap/TableMap";
 import "./ProductsPage.css"
+import Filter from "../Component/SortFilter/Filter";
+import Sort from "../Component/SortFilter/Sort";
+import { GrPowerReset } from 'react-icons/gr';
 
 function ProductsPage() {
   const [totaldata, setTotaldata] = useState([])
   const [showdata, setShowData] = useState([])
   const [filterbyCatagory, setFilterbyCatagory] = useState("")
+  const [sort, setSort] = useState("")
   const [page, setPage] = useState(1);
+
+  const [query, setQuery] = useState("")
+
+  async function handleSearch() {
+    setSort("")
+    setFilterbyCatagory("")
+
+    const res = await fetch(
+      `https://dummyjson.com/products/search?q=${query}`
+    );
+    const data = await res.json();
+    console.log(data.products)
+    setShowData(() => data.products)
+
+  }
+  console.log(showdata)
 
   const getCardData = async () => {
     const res = await fetch(
@@ -15,25 +35,22 @@ function ProductsPage() {
     const data = await res.json();
     setTotaldata(data.products);
     setShowData(data.products.slice(page * 20 - 20, page * 20))
-
+    setPage(prev => Number(prev) + 1)
   };
 
   const handelInfiniteScroll = async () => {
-
     try {
       if (
         window.innerHeight + document.documentElement.scrollTop + 1 >=
-        document.documentElement.scrollHeight && page <= 5 && filterbyCatagory == ""
+        document.documentElement.scrollHeight && page <= 5 && filterbyCatagory == "" && query == ""
       ) {
         setPage(prev => Number(prev) + 1)
-        console.log(page)
         setShowData((prev) => [...prev, ...totaldata.slice(page * 20 - 20, page * 20)])
       }
     } catch (error) {
       console.log(error);
     }
   };
-
   useEffect(() => {
     getCardData();
   }, []);
@@ -42,101 +59,45 @@ function ProductsPage() {
   useEffect(() => {
     window.addEventListener("scroll", handelInfiniteScroll);
     return () => window.removeEventListener("scroll", handelInfiniteScroll);
-  }, [showdata]);
-
-
-  function HandleChange(e) {
-
-    let filterdData = totaldata.filter((product) => {
-      return product.category === e.target.value
-
-    })
-    setShowData(filterdData)
-  }
+  }, [showdata, query]);
 
 
 
-  function HandleSort(e) {
-    console.log('invoked')
-    let filterdata
-    if (filterbyCatagory !== "") {
-      filterdata = totaldata.filter((product) => {
-        return product.category === filterbyCatagory
-
-      })
-      console.log(filterdata)
-
-      if (e.target.value == "htl") {
-        let SortData = filterdata.sort(function (a, b) {
-          return b.price - a.price
-        })
-        setTotaldata(SortData)
-        setShowData(SortData.slice(page * 20 - 20, page * 20))
-        setPage(prev => Number(prev) + 1)
-        console.log(SortData)
-      } else if (e.target.value == "lth") {
-        let SortData = filterdata.sort(function (a, b) {
-          return a.price - b.price
-        })
-        setTotaldata(SortData)
-        setShowData(SortData.slice(page * 20 - 20, page * 20))
-        setPage(prev => Number(prev) + 1)
-        console.log(SortData)
-      }
-
-    }
-
-    else {
-      if (e.target.value == "htl") {
-        let SortData = totaldata.sort(function (a, b) {
-          return b.price - a.price
-        })
-        setTotaldata(SortData)
-        setShowData(SortData.slice(page * 20 - 20, page * 20))
-        setPage(prev => Number(prev) + 1)
-      } else if (e.target.value == "lth") {
-        let SortData = totaldata.sort(function (a, b) {
-          return a.price - b.price
-        })
-        setTotaldata(SortData)
-        setShowData(SortData.slice(page * 20 - 20, page * 20))
-        setPage(prev => Number(prev) + 1)
-      }
-    }
-
+  function reset() {
+    window.location.reload(true)
   }
 
 
 
   return (
-    <div >
+    <div style={{ marginBottom: "80px" }}>
 
-      <div className="filterdiv">
-        <label >Choose By Catagory:</label>
-        <select name="cars" id="cars" onChange={prev => {
-          setFilterbyCatagory(prev.target.value)
-          HandleChange(prev)
-        }}>
-          <option value="">Choose</option>
-          <option value="smartphones">smartphones</option>
-          <option value="fragrances">fragrances</option>
-          <option value="skincare">skincare</option>
-          <option value="groceries">groceries</option>
-          <option value="home-decoration">home-decoration</option>
-          <option value="tops">tops</option>
-        </select>
+      <div className="sortfiltersearch">
+        <div className="sortfilter">
+          <div><Filter setFilterbyCatagory={setFilterbyCatagory} totaldata={totaldata} setShowData={setShowData}
+            filterbyCatagory={filterbyCatagory}
 
-        <label >Sort By Price</label>
-        <select name="" id="" onChange={HandleSort}>
-          <option value="" >Choose</option>
-          <option value="htl">High To Low</option>
-          <option value="lth">Low To High</option>
-        </select>
+          /></div>
+
+          <div> <Sort setPage={setPage}
+            filterbyCatagory={filterbyCatagory}
+            page={page} totaldata={totaldata}
+            setTotaldata={setTotaldata}
+            setShowData={setShowData}
+            showdata={showdata}
+            sort={sort}
+          /></div>
 
 
+          <div className="reset" onClick={reset}>
+            <GrPowerReset style={{ color: "#0CAADA" }} /> <h4>Reset</h4>
+          </div>
+        </div>
 
+        <div className="search"> <input type="text" placeholder="Search..." onChange={(e) => setQuery(e.target.value)} />
+          <button onClick={handleSearch}>Search</button>
+        </div>
       </div>
-
 
       <table>
         <tr>
@@ -164,3 +125,4 @@ export default ProductsPage;
 
 
 
+//<div>   <Search totaldata={totaldata} setShowData={setShowData} /></div>

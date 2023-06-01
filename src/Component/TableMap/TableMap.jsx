@@ -1,5 +1,7 @@
 import { useState } from "react"
 import "./TableMap.css"
+import { BsCurrencyRupee } from 'react-icons/bs';
+
 
 function TableMap({ title, description, thumbnail, price, rating, id }) {
 
@@ -27,11 +29,11 @@ function TableMap({ title, description, thumbnail, price, rating, id }) {
         <>
 
             <tr>
-                <td><img width='60%' src={thumbnail} /></td>
+                <td ><img className="image" width='70%' src={thumbnail} /></td>
                 <td><h3>{title}</h3></td>
                 <td><p className="description">{description}</p></td>
                 <td className="rating">{rating}</td>
-                <td><h4 className="price">{price}</h4></td>
+                <td ><h4 className="price"><BsCurrencyRupee/>{" "}{price}</h4></td>
                 <td>
                     <div className="Quantitydiv">
                         <p className="sub" onClick={() => HandleDecreament(id)} >-</p>
