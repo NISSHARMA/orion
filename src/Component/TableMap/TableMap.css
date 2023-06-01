@@ -1,0 +1,21 @@
+.description {
+    padding: 20px;
+}
+
+.Quantitydiv {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.price,
+.reviews {
+    padding: 20px;
+}
+
+.sub,
+.add,
+.quantity {
+    font-size: 20px;
+    cursor: pointer;
+}
