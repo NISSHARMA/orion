@@ -57,7 +57,7 @@ function ProductsPage() {
 
     console.log(st, sh - ht);
 
-    if (st + ht + 1 >= sh && filterbyCatagory == "" && query == "" ) {
+    if (st + ht + 1 >= sh && filterbyCatagory == "" && query == "" && page <= 4) {
       setPage(page + 1)
       setShowData((prev) => totaldata.slice((page + 1) * 20 - 20, (page + 1) * 20))
       ele.scrollTo(0, sh * 0.1)
