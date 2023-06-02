@@ -42,7 +42,7 @@ function ProductsPage() {
       `https://dummyjson.com/products?limit=100`
     );
     const data = await res.json();
-    console.log(data)
+    //console.log(data)
     setTotaldata(data.products);
     setShowData(data.products.slice(0, 20))
     setPage(1)
@@ -50,14 +50,14 @@ function ProductsPage() {
 
   const handelInfiniteScroll2 = async () => {
     let ele = document.getElementById("tablediv")
-    console.log(ele)
+    // console.log(ele)
     var sh = ele.scrollHeight;
     var st = ele.scrollTop;
     var ht = ele.offsetHeight;
+    // console.log(ht)
+    // console.log(st + ht + 1, sh);
 
-    console.log(st, sh - ht);
-
-    if (st + ht + 1 >= sh && filterbyCatagory == "" && query == "" && page <= 4) {
+    if (st + ht + 2 >= sh && filterbyCatagory == "" && query == "" && page <= 4) {
       setPage(page + 1)
       setShowData((prev) => totaldata.slice((page + 1) * 20 - 20, (page + 1) * 20))
       ele.scrollTo(0, sh * 0.1)
