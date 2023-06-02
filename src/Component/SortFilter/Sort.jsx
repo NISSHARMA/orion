@@ -25,7 +25,7 @@ function Sort({ setPage, page, totaldata, setShowData, setTotaldata, filterbyCat
 
         setTotaldata(totaldata)
         setShowData(sortData.slice(0, 20))
-        setPage(2)
+        setPage(1)
     }
 
     return (
